@@ -44,9 +44,11 @@ public class ArduinoConnection : MonoBehaviour
                 //Debug.Log(sp.ReadByte());
                 TreatMessage(GetNextMessage());
             }
-            catch (System.Exception)
+            catch (System.Exception err)
             {
-                //throw;
+                Debug.LogError("FATAL::ERROR - Arduino not connected!");
+                Debug.LogError(err.Message);
+                //throw err;
             }
         }
 
