@@ -48,14 +48,11 @@ public class AudioManager : Singleton<AudioManager>
         }
     }
 
-    public void PlayAudio(AudioClip audioClip, bool audioEnded)
+    public void PlayAudio(AudioClip audioClip, System.Action audioEnded)
     {
         if (!playingAudio)
         {
-            StartCoroutine(WaitForAudio(audioClip, (result) =>
-            {
-                audioEnded = result;
-            }));
+            StartCoroutine(WaitForAudio(audioClip, audioEnded));
         }
     }
 
@@ -74,12 +71,13 @@ public class AudioManager : Singleton<AudioManager>
         playingAudio = false;
     }
 
-    IEnumerator WaitForAudio(AudioClip audio, System.Action<bool> myVariableResult)
+    IEnumerator WaitForAudio(AudioClip audio, System.Action onAudioEnd)
     {
         playingAudio = true;
         Instance.ChooseAudioSource(audio);
         yield return new WaitForSeconds(audio.length);
         playingAudio = false;
-        myVariableResult(true);
+        onAudioEnd();
     }
+
 }

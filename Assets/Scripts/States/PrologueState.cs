@@ -11,7 +11,7 @@ public class PrologueState : StateMachineBehaviour {
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
-        AudioManager.Instance.PlayAudio(enterAudio, enterAudioEnded);
+        AudioManager.Instance.PlayAudio(enterAudio, () => { enterAudioEnded = true; });
     }
 
 	// OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -20,17 +20,6 @@ public class PrologueState : StateMachineBehaviour {
         {
             Debug.Log("UPDATE!");
             AudioManager.Instance.PlayAudio(outroAudio);
-        }
-        else
-        {
-            if (enterAudioEnded)
-            {
-                Debug.Log("Functionou!");
-            }
-            else
-            {
-                Debug.Log("Não funcionou!");
-            }
         }
     }
 
