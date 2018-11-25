@@ -1,11 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class PrologueState : StateMachineBehaviour {
+public class NormalSceneState : StateMachineBehaviour {
 
     public AudioClip enterAudio;
-    public AudioClip outroAudio;
 
     private bool enterAudioEnded = false;
 
@@ -18,14 +15,7 @@ public class PrologueState : StateMachineBehaviour {
 	override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
         if (enterAudioEnded)
         {
-            Debug.Log("UPDATE!");
-            AudioManager.Instance.PlayAudio(outroAudio);
+            animator.SetTrigger("nextState");
         }
-    }
-
-    // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
-    override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
-	
 	}
-
 }

@@ -7,6 +7,9 @@ using UnityEngine;
 public class ArduinoConnection : MonoBehaviour
 {
 
+
+    public Animator stateMachine;
+
     private enum MessageTypes
     {
         btn1,
@@ -65,31 +68,37 @@ public class ArduinoConnection : MonoBehaviour
         {
             case MessageTypes.btn1:
                 //Debug.Log("Btn1: " + message.value);
-                PlayAudioSource(0, message.value);
+                //PlayAudioSource(0, message.value);
+                stateMachine.SetBool("btn1", (message.value == 0) ? true : false);
                 break;
             case MessageTypes.btn2:
                 //Debug.Log("Btn2: " + message.value);
-                PlayAudioSource(1, message.value);
+                //PlayAudioSource(1, message.value);
+                stateMachine.SetBool("btn2", (message.value == 0) ? true : false);
                 break;
             case MessageTypes.btn3:
                 //Debug.Log("Btn3: " + message.value);
-                PlayAudioSource(2, message.value);
+                stateMachine.SetBool("btn3", (message.value == 0) ? true : false);
                 break;
             case MessageTypes.btn4:
                 //Debug.Log("Btn4: " + message.value);
-                PlayAudioSource(3, message.value);
+                //PlayAudioSource(3, message.value);
+                stateMachine.SetBool("btn4", (message.value == 0) ? true : false);
                 break;
             case MessageTypes.switch1:
                 //Debug.Log("Switch: " + message.value);
-                ToggleAudioSources(message.value);
+                //ToggleAudioSources(message.value);
+                stateMachine.SetBool("switch", (message.value == 0) ? true : false);
                 break;
             case MessageTypes.pot1:
                 //Debug.Log("Pot1: " + message.value);
-                ControlPitch(message.value);
+                //ControlPitch(message.value);
+                stateMachine.SetInteger("pot1", message.value);
                 break;
             case MessageTypes.pot2:
                 //Debug.Log("Pot2: " + message.value);
-                ControllVolume(message.value);
+                //ControllVolume(message.value);
+                stateMachine.SetInteger("pot2", message.value);
                 break;
         }
     }
