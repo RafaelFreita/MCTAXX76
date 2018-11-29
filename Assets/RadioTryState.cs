@@ -16,12 +16,13 @@ public class RadioTryState : StateMachineBehaviour
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        animator.ResetTrigger("nextState");
         o1 = AudioManager.Instance.oscilator1;
         o2 = AudioManager.Instance.oscilator2;
         o3 = AudioManager.Instance.oscilator3;
-        o1.gain = 1.0f;
-        o2.gain = 1.0f;
-        o3.gain = 1.0f;
+        o1.gain = 0.2f;
+        o2.gain = 0.2f;
+        o3.gain = 0.8f;
         o3.frequency = 440.0f;
         do
         {
@@ -39,8 +40,8 @@ public class RadioTryState : StateMachineBehaviour
         int pot1CurVal = pot1Goal - animator.GetInteger("pot1");
         int pot2CurVal = pot2Goal - animator.GetInteger("pot2");
 
-        o1.frequency = 440.0f + pot1CurVal * 20.0f;
-        o2.frequency = 440.0f + pot2CurVal * 20.0f;
+        o1.frequency = 440.0f + pot1CurVal * 4.0f;
+        o2.frequency = 440.0f + pot2CurVal * 4.0f;
 
 
         if ((Mathf.Abs(pot1CurVal) + Mathf.Abs(pot2CurVal)) < goalThreshold)

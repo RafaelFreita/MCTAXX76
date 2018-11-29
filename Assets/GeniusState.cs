@@ -24,6 +24,7 @@ public class GeniusState : StateMachineBehaviour
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        animator.ResetTrigger("nextState");
         _states = new List<int>(4);
         List<int> myArr = new List<int>() { 1, 2, 3, 4 };
         for (int i = 0; i < statesQtd; i++)
