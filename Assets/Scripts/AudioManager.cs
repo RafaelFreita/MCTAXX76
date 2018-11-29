@@ -8,6 +8,10 @@ public class AudioManager : Singleton<AudioManager>
     public short audioInstancesQtd = 4;
     public float instancesDistance = 2f;
 
+    public Oscilator oscilator1;
+    public Oscilator oscilator2;
+    public Oscilator oscilator3;
+
     private AudioSource[] audioSources;
     private bool playingAudio = false;
 

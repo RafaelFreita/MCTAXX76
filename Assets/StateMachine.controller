@@ -13,49 +13,49 @@ AnimatorController:
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: btn2
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: btn3
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: btn4
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: switch
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: nextState
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: pot1
     m_Type: 3
     m_DefaultFloat: 0
     m_DefaultInt: 1
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: pot2
     m_Type: 3
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
@@ -152,7 +152,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   statesQtd: 4
-  audiosList: []
+  freqsList:
+  - 250
+  - 340
+  - 430
+  - 520
 --- !u!114 &114509589930257488
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -164,7 +168,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c8418b70a968374f99c86c70180bff1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waitSeconds: 3
+  waitSeconds: 5
 --- !u!114 &114549827763498556
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -437,7 +441,10 @@ AnimatorStateTransition:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: 
-  m_Conditions: []
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: nextState
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1102906270007979628}
   m_Solo: 0
@@ -548,7 +555,10 @@ AnimatorStateTransition:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: 
-  m_Conditions: []
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: nextState
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1102573924029268530}
   m_Solo: 0
@@ -950,16 +960,16 @@ AnimatorStateMachine:
     m_Position: {x: 648, y: 240, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102573341178472376}
-    m_Position: {x: 648, y: 336, z: 0}
+    m_Position: {x: 660, y: 336, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102865367725426980}
     m_Position: {x: 648, y: 420, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102764399085650072}
-    m_Position: {x: 648, y: 504, z: 0}
+    m_Position: {x: 660, y: 504, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102576333468610306}
-    m_Position: {x: 648, y: 588, z: 0}
+    m_Position: {x: 672, y: 588, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
@@ -969,4 +979,4 @@ AnimatorStateMachine:
   m_EntryPosition: {x: 84, y: 132, z: 0}
   m_ExitPosition: {x: 800, y: 120, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
-  m_DefaultState: {fileID: 1102417955378724170}
+  m_DefaultState: {fileID: 1102576333468610306}

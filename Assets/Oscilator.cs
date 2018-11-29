@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(AudioSource))]
 public class Oscilator : MonoBehaviour {
 
 
@@ -29,30 +30,6 @@ public class Oscilator : MonoBehaviour {
         frequencies[7] = 880;
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            gain = volume;
-        }
-        if (Input.GetKeyUp(KeyCode.Space))
-        {
-            gain = 0.0f;
-        }
-        if (Input.GetKeyUp(KeyCode.W))
-        {
-            thisFreq++;
-            thisFreq %= frequencies.Length;
-            frequency = frequencies[thisFreq];
-        }
-        if (Input.GetKeyUp(KeyCode.S))
-        {
-            thisFreq--;
-            thisFreq = (thisFreq%frequencies.Length + frequencies.Length) % frequencies.Length;
-            frequency = frequencies[thisFreq];
-        }
-    }
-
     private void OnAudioFilterRead(float[] data, int channels)
     {
         increment = frequency * 2.0 * Mathf.PI / samplingFrequency;
@@ -72,6 +49,19 @@ public class Oscilator : MonoBehaviour {
                 phase = 0.0f;
             }
         }
+    }
+
+    public void PlayFrequency(float freq, float secs, System.Action onAudioEnd) {
+        StartCoroutine(PlayAudio(freq, secs, onAudioEnd));
+    }
+
+    IEnumerator PlayAudio(float freq, float secs, System.Action onAudioEnd)
+    {
+        frequency = freq;
+        gain = 1.0f;
+        yield return new WaitForSeconds(secs);
+        gain = 0.0f;
+        onAudioEnd();
     }
 
 }

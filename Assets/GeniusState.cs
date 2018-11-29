@@ -2,65 +2,165 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GeniusState : StateMachineBehaviour {
+public class GeniusState : StateMachineBehaviour
+{
 
     public int statesQtd = 4;
-    public List<AudioClip> audiosList = new List<AudioClip>(4);
+    public List<float> freqsList = new List<float>(4);
 
-    private int _currentState = 0;
+    private Oscilator oscilator;
+    private int _currentState = 1;
     private List<int> _states;
 
-    private bool _waiting = false;
+    private bool finishedAudios = false;
 
-	 // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
-	override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
-        _states = new List<int>(statesQtd);
+    private bool waitingAudio = false;
+    private bool audioEnded = false;
+    private int playingState = 0;
+
+    private int currentTry = 0;
+    private bool reseting = false;
+
+    // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
+    override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    {
+        _states = new List<int>(4);
+        List<int> myArr = new List<int>() { 1, 2, 3, 4 };
         for (int i = 0; i < statesQtd; i++)
         {
-            _states[0] = Random.Range(1,4);
+            int index = Random.Range(0, myArr.Count - 1);
+            _states.Add(myArr[index]);
+            myArr.RemoveAt(index);
+            Debug.Log(_states[i]);
         }
-	}
+        oscilator = AudioManager.Instance.oscilator1;
+    }
 
-	// OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
-	override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
-	    if(_currentState >= statesQtd)
+    // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
+    override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    {
+        if (_currentState > statesQtd)
         {
             animator.SetTrigger("nextState");
         }
-        else
+        else if (!reseting)
         {
             // Play this state audios
-            if (!_waiting)
+            if (!finishedAudios)
             {
-                for (int i = 0; i < _currentState; i++)
-                {
-                    AudioManager.Instance.PlayAudio(audiosList[i]);
-                }
-                _waiting = true;
+                PlayStateAudios();
             }
             // Wait for player inputs for this given state
             else
             {
-                   
+                if (animator.GetBool("btn1"))
+                {
+                    if (_states[currentTry] == 1)
+                    {
+                        AdvanceTry();
+                    }
+                    else
+                    {
+                        Reset();
+                    }
+                }
+
+                if (animator.GetBool("btn2"))
+                {
+                    if (_states[currentTry] == 2)
+                    {
+                        AdvanceTry();
+                    }
+                    else
+                    {
+                        Reset();
+                    }
+                }
+
+                if (animator.GetBool("btn3"))
+                {
+                    if (_states[currentTry] == 3)
+                    {
+                        AdvanceTry();
+                    }
+                    else
+                    {
+                        Reset();
+                    }
+                }
+
+                if (animator.GetBool("btn4"))
+                {
+                    if (_states[currentTry] == 4)
+                    {
+                        AdvanceTry();
+                    }
+                    else
+                    {
+                        Reset();
+                    }
+                }
+            }
+
+            if (currentTry >= _currentState)
+            {
+                currentTry = 0;
+                _currentState++;
+                playingState = 0;
+                waitingAudio = false;
+                audioEnded = false;
+                finishedAudios = false;
+            }
+
+            if (_currentState > statesQtd)
+            {
+                animator.SetTrigger("nextState");
             }
         }
-	}
+    }
 
 
 
+    private void AdvanceTry()
+    {
+        reseting = true;
+        oscilator.PlayFrequency(freqsList[_states[currentTry]-1], 0.5f, () => { reseting = false; });
+        currentTry++;
+    }
 
-	// OnStateExit is called when a transition ends and the state machine finishes evaluating this state
-	//override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
-	//
-	//}
 
-	// OnStateMove is called right after Animator.OnAnimatorMove(). Code that processes and affects root motion should be implemented here
-	//override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
-	//
-	//}
+    private void Reset()
+    {
+        reseting = true;
+        oscilator.PlayFrequency(120.0f, 1.5f, () =>
+        {
+            currentTry = 0;
+            finishedAudios = false;
+            reseting = false;
+            playingState = 0;
+            waitingAudio = false;
+            audioEnded = false;
+        });
+    }
 
-	// OnStateIK is called right after Animator.OnAnimatorIK(). Code that sets up animation IK (inverse kinematics) should be implemented here.
-	//override public void OnStateIK(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
-	//
-	//}
+    private void PlayStateAudios()
+    {
+        if (!waitingAudio)
+        {
+            waitingAudio = true;
+            oscilator.PlayFrequency(freqsList[_states[playingState]-1], 0.5f, () => { audioEnded = true; });
+        }
+        else if (audioEnded)
+        {
+            playingState += 1;
+            audioEnded = false;
+            waitingAudio = false;
+        }
+
+        if (playingState >= _currentState)
+        {
+            finishedAudios = true;
+        }
+    }
+
 }
